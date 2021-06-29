@@ -1,2 +1,2 @@
-export * from './lib/async';
-export * from './lib/number';
+import Nordigen from "./lib/nordigen";
+export default Nordigen;

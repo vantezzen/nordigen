@@ -1,0 +1,234 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>nordigen</title>
+	<meta name="description" content="Documentation for nordigen">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">nordigen</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>nordigen</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#nordigen" id="nordigen" style="color: inherit; text-decoration: none;">
+					<h1>nordigen</h1>
+				</a>
+				<p>Unofficial JavaScript API Library for Nordigen.</p>
+				<p>This library allows you to easily access the Nordigen Account Information API.</p>
+				<p>Please note that the Categorisation &amp; Insights API is not yet implemented into this library. If you have access to that API, feel free to contribute to this library.</p>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<p>Here is an example flow on how you can access accounts using the library:</p>
+				<pre><code class="language-JS"><span class="hljs-keyword">import</span> Nordigen <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;nordigen&#x27;</span>;
+
+<span class="hljs-keyword">const</span> nordigen = <span class="hljs-keyword">new</span> Nordigen(<span class="hljs-string">&#x27;YOUR_ACCESS_TOKEN&#x27;</span>);
+
+<span class="hljs-comment">// Please note that you might also define an endpoint URL if you do not use the default Nordigen API, e.g.</span>
+<span class="hljs-comment">// const nordigen = new Nordigen(&#x27;YOUR_ACCESS_TOKEN&#x27;, &#x27;https://ob.beta.nordigen.com/api&#x27;);</span>
+
+<span class="hljs-comment">// First, get a list of ASPSPs (Banks) for the user</span>
+<span class="hljs-keyword">const</span> aspsps = <span class="hljs-keyword">await</span> nordigen.getASPSPsForCountry(<span class="hljs-string">&#x27;gb&#x27;</span>);
+
+<span class="hljs-comment">// Let the user pick their ASPSP now. We will use the first ASPSP in this example:</span>
+<span class="hljs-keyword">const</span> userAspsp = aspsps[<span class="hljs-number">0</span>];
+
+<span class="hljs-comment">// A user needs an end user ID later on. You can choose this ID freely but it should remain the same</span>
+<span class="hljs-keyword">const</span> enduser_id = <span class="hljs-string">&quot;demo&quot;</span>;
+
+<span class="hljs-comment">// Optionally, you can create an end user agreement to define a custom history length. If you want to use the default length of 90 days, skip this step</span>
+<span class="hljs-keyword">const</span> agreement = <span class="hljs-keyword">await</span> nordigen.createEndUserAgreement(enduser_id, userAspsp.id, <span class="hljs-number">30</span>);
+
+<span class="hljs-comment">// Now we need to create a &quot;requisition&quot; which allows us to authenticate a user at their bank</span>
+<span class="hljs-keyword">const</span> requisition = <span class="hljs-keyword">await</span> nordigen.createRequisition(
+  enduser_id,
+
+  <span class="hljs-comment">// The user needs to be redirected to their bank&#x27;s website. After they are done they will be redirected back to your website.</span>
+  <span class="hljs-comment">// This is why you will need to define a redirect URL here</span>
+  <span class="hljs-string">`https://example.com/nordigen-callback?user=<span class="hljs-subst">${enduser_id}</span>`</span>,
+
+  <span class="hljs-comment">// You can define another unique ID here. This is the &quot;reference&quot; to this requisition</span>
+  <span class="hljs-string">&quot;demo_id&quot;</span>,
+
+  <span class="hljs-comment">// The following arguments are completely *optional*. If you don&#x27;t need them, don&#x27;t define them</span>
+
+  <span class="hljs-comment">// Array of User agreements that we want to use</span>
+  [
+    agreement
+  ],
+
+  <span class="hljs-comment">// A language code that should be used. Otherwise, the user language will be used automatically. Format should be ISO 3166</span>
+  <span class="hljs-string">&quot;EN/us&quot;</span>
+);
+
+<span class="hljs-comment">// We have now create a requisition but we will need to redirect the user to their bank&#x27;s website now. For that, we need the requisition link for the user&#x27;s bank</span>
+<span class="hljs-keyword">const</span> requisitionLink = <span class="hljs-keyword">await</span> nordigen.getRequisitionLink(userAspsp.id);
+
+<span class="hljs-comment">// You may now redirect the user to this link and wait while they authenticate at their bank.</span>
+
+<span class="hljs-comment">// As soon as the user comes back (e.g. being on the callback URL) we can get user information from our requsition.</span>
+<span class="hljs-keyword">const</span> requsitionInfo = <span class="hljs-keyword">await</span> nordigen.getRequisitionInfo(requisition.id);
+
+<span class="hljs-comment">// This will give you a list of account IDs the user has access to under requsitionInfo.accounts</span>
+<span class="hljs-comment">// You may now allow the user to choose one of those accounts or loop through each account.</span>
+<span class="hljs-comment">// We will continue with using only the first account.</span>
+
+<span class="hljs-comment">// Let us get some more details about the user account</span>
+<span class="hljs-keyword">const</span> details = <span class="hljs-keyword">await</span> nordigen.getAccountDetails(requsitionInfo.accounts[<span class="hljs-number">0</span>]);
+<span class="hljs-comment">// This info now includes the Account IBAN, ownder name etc.</span>
+
+<span class="hljs-comment">// We can also fetch the account balances</span>
+<span class="hljs-keyword">const</span> balances = <span class="hljs-keyword">await</span> nordigen.getAccountBalances(requsitionInfo.accounts[<span class="hljs-number">0</span>]);
+
+<span class="hljs-comment">// ...or a list of transactions in our history timeframe</span>
+<span class="hljs-keyword">const</span> transactions = <span class="hljs-keyword">await</span> nordigen.getAccountTransactions(requsitionInfo.accounts[<span class="hljs-number">0</span>]);
+
+<span class="hljs-comment">// You can look at the API documentation or /src/lib/types for more information about the returned data</span>
+
+<span class="hljs-comment">// These are the methods this library provides.</span>
+<span class="hljs-comment">// If you want to call an API endpoint not defined in the library (e.g. deleting an agreement), you can call the &quot;makeRequest&quot; method directly instead:</span>
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> notdigen.makeRequest(
+  <span class="hljs-comment">// Relative path to the endpoint. You don&#x27;t need the &quot;https://ob.nordigen.com/api&quot;</span>
+  <span class="hljs-string">&quot;/agreements/enduser/MY_ID&quot;</span>,
+
+  <span class="hljs-comment">// Optional HTTP method. This will default to &quot;GET&quot;</span>
+  <span class="hljs-string">&quot;DELETE&quot;</span>,
+
+  <span class="hljs-comment">// Optional HTTP body object. This will automatically be JSON encoded</span>
+  {
+    <span class="hljs-comment">// (This route doesn&#x27;t require any body data)</span>
+  }
+);
+</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/nordigen.html" class="tsd-kind-icon">Nordigen</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#aspsp" class="tsd-kind-icon">ASPSP</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#accountdetaildata" class="tsd-kind-icon">Account<wbr>Detail<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#amountvalue" class="tsd-kind-icon">Amount<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#balance" class="tsd-kind-icon">Balance</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#balancedata" class="tsd-kind-icon">Balance<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#bankaccount" class="tsd-kind-icon">Bank<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#enduseragreement" class="tsd-kind-icon">End<wbr>User<wbr>Agreement</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#requisition" class="tsd-kind-icon">Requisition</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#transaction" class="tsd-kind-icon">Transaction</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#transactiondata" class="tsd-kind-icon">Transaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#double" class="tsd-kind-icon">double</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#power" class="tsd-kind-icon">power</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
