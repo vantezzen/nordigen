@@ -1,2 +1,2 @@
-import Nordigen from "./lib/nordigen";
+import Nordigen from './lib/nordigen';
 export default Nordigen;
