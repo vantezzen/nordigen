@@ -1,4 +1,4 @@
-# nordigen
+# nordigen-api
 
 Unofficial JavaScript API Library for Nordigen.
 
@@ -6,13 +6,18 @@ This library allows you to easily access the Nordigen Account Information API.
 
 Please note that the Categorisation & Insights API is not yet implemented into this library. If you have access to that API, feel free to contribute to this library.
 
+API Documentation: https://vantezzen.github.io/nordigen/
+NPM: https://www.npmjs.com/package/nordigen-api
+
 ## Installation
 
 Simply install the Library via NPM:
 
 ```bash
-npm install nordigen
+npm install nordigen-api
 ```
+
+nordigen-api is build with TypeScript so you shouldn't need to install additionaly packages for type-support.
 
 ## Usage
 
@@ -21,7 +26,7 @@ This library uses Promise-based methods for calling the API. It is rept very sli
 Here is an example flow on how you can access accounts using the library. This example follows the same steps as defined in Nordigen's API quickstart guide at https://nordigen.com/en/account_information_documenation/integration/quickstart_guide/.
 
 ```JS
-import Nordigen from 'nordigen';
+import Nordigen from 'nordigen-api';
 
 const nordigen = new Nordigen('YOUR_ACCESS_TOKEN');
 

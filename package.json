@@ -1,5 +1,5 @@
 {
-  "name": "nordigen",
+  "name": "nordigen-api",
   "version": "1.0.1",
   "description": "Unofficial JavaScript API Library for Nordigen",
   "main": "build/main/index.js",
