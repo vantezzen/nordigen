@@ -76,7 +76,7 @@ const requsitionInfo = await nordigen.getRequisitionInfo(requisition.id);
 
 // Let us get some more details about the user account
 const details = await nordigen.getAccountDetails(requsitionInfo.accounts[0]);
-// This info now includes the Account IBAN, ownder name etc.
+// This info now includes the Account IBAN, owner name etc.
 
 // We can also fetch the account balances
 const balances = await nordigen.getAccountBalances(requsitionInfo.accounts[0]);
@@ -88,7 +88,7 @@ const transactions = await nordigen.getAccountTransactions(requsitionInfo.accoun
 
 // These are the methods this library provides.
 // If you want to call an API endpoint not defined in the library (e.g. deleting an agreement), you can call the "makeRequest" method directly instead:
-const response = await notdigen.makeRequest(
+const response = await nordigen.makeRequest(
   // Relative path to the endpoint. You don't need the "https://ob.nordigen.com/api"
   "/agreements/enduser/MY_ID",
 
