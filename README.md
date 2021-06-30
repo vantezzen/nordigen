@@ -68,7 +68,7 @@ const requisition = await nordigen.createRequisition(
 );
 
 // We have now create a requisition but we will need to redirect the user to their bank's website now. For that, we need the requisition link for the user's bank
-const requisitionLink = await nordigen.getRequisitionLink(userAspsp.id);
+const requisitionLink = await nordigen.getRequisitionLink(requisition, userAspsp.id);
 
 // You may now redirect the user to this link and wait while they authenticate at their bank.
 

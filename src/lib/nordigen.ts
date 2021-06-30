@@ -54,7 +54,7 @@ export default class Nordigen {
   async makeRequest(
     path: string,
     method = 'GET',
-    body: Record<string, unknown> = {}
+    body: Record<string, unknown> | false = false
   ) {
     const request = await fetch(`${this.endpoint}${path}`, {
       method,
@@ -63,9 +63,11 @@ export default class Nordigen {
         Authorization: `Token ${this.accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+     ...(body ? { body: JSON.stringify(body) } : {}),
     });
-    return await request.json();
+    const response = await request.json();
+    console.log('RESPONSE:', response);
+    return response;
   }
 
   /**
@@ -138,13 +140,17 @@ export default class Nordigen {
   /**
    * Get the link for the user requisition
    *
+   * @param requsition Requisition as returned by `createRequisition`
    * @param aspsp_id ID for the user's ASPSP (Bank)
    * @returns Link for "false" if Nordigen didn't return one
    */
-  async getRequisitionLink(aspsp_id: string): Promise<string | false> {
+  async getRequisitionLink(requsition : Requisition, aspsp_id: string): Promise<string | false> {
     const response = await this.makeRequest(
-      `/requisitions/${aspsp_id}/links/`,
-      'POST'
+      `/requisitions/${requsition.id}/links/`,
+      'POST',
+      {
+        aspsp_id,
+      }
     );
     if (response && response.initiate) {
       return response.initiate;
