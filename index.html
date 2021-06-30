@@ -78,7 +78,7 @@
 				<p>Simply install the Library via NPM:</p>
 				<pre><code class="language-bash">npm install nordigen-api
 </code></pre>
-				<p>nordigen-api is build with TypeScript so you shouldn&#39;t need to install additionaly packages for type-support.</p>
+				<p>nordigen-api is build with TypeScript so you shouldn&#39;t need to install additional packages for type-support.</p>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
@@ -126,7 +126,7 @@
 );
 
 <span class="hljs-comment">// We have now create a requisition but we will need to redirect the user to their bank&#x27;s website now. For that, we need the requisition link for the user&#x27;s bank</span>
-<span class="hljs-keyword">const</span> requisitionLink = <span class="hljs-keyword">await</span> nordigen.getRequisitionLink(userAspsp.id);
+<span class="hljs-keyword">const</span> requisitionLink = <span class="hljs-keyword">await</span> nordigen.getRequisitionLink(requisition, userAspsp.id);
 
 <span class="hljs-comment">// You may now redirect the user to this link and wait while they authenticate at their bank.</span>
 
