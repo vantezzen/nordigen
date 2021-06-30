@@ -1,6 +1,6 @@
 {
   "name": "nordigen-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Unofficial JavaScript API Library for Nordigen",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
