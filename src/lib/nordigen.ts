@@ -63,10 +63,9 @@ export default class Nordigen {
         Authorization: `Token ${this.accessToken}`,
         'Content-Type': 'application/json',
       },
-     ...(body ? { body: JSON.stringify(body) } : {}),
+      ...(body ? { body: JSON.stringify(body) } : {}),
     });
     const response = await request.json();
-    console.log('RESPONSE:', response);
     return response;
   }
 
@@ -144,7 +143,10 @@ export default class Nordigen {
    * @param aspsp_id ID for the user's ASPSP (Bank)
    * @returns Link for "false" if Nordigen didn't return one
    */
-  async getRequisitionLink(requsition : Requisition, aspsp_id: string): Promise<string | false> {
+  async getRequisitionLink(
+    requsition: Requisition,
+    aspsp_id: string
+  ): Promise<string | false> {
     const response = await this.makeRequest(
       `/requisitions/${requsition.id}/links/`,
       'POST',

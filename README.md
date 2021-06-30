@@ -17,7 +17,7 @@ Simply install the Library via NPM:
 npm install nordigen-api
 ```
 
-nordigen-api is build with TypeScript so you shouldn't need to install additionaly packages for type-support.
+nordigen-api is build with TypeScript so you shouldn't need to install additional packages for type-support.
 
 ## Usage
 
