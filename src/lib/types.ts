@@ -52,7 +52,7 @@ export type Requisition = {
 
 export type AmountValue = {
   readonly currency: string;
-  readonly amount: number;
+  readonly amount: string;
 };
 
 /**
