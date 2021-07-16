@@ -109,7 +109,8 @@
 
   <span class="hljs-comment">// The user needs to be redirected to their bank&#x27;s website. After they are done they will be redirected back to your website.</span>
   <span class="hljs-comment">// This is why you will need to define a redirect URL here</span>
-  <span class="hljs-string">`https://example.com/nordigen-callback?user=<span class="hljs-subst">${enduser_id}</span>`</span>,
+  <span class="hljs-comment">// PLEASE <span class="hljs-doctag">NOTE:</span> Nordigen will automatically add &quot;?ref={enduser_id}&quot; to this callback URL so you won&#x27;t need to add that yourself!</span>
+  <span class="hljs-string">`https://example.com/nordigen-callback`</span>,
 
   <span class="hljs-comment">// You can define another unique ID here. This is the &quot;reference&quot; to this requisition</span>
   <span class="hljs-string">&quot;demo_id&quot;</span>,
