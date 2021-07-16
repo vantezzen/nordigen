@@ -37,14 +37,23 @@ Please make sure to create a Nordigen Token at https://ob.nordigen.com/tokens/`)
 
   console.log(`Found ${aspsps.length} banks in that country. That's a lot of banks so let us filter out your bank`);
 
-  // Search and pick a bank. Your application might present a webpage to the user to pick their bank instead
-  const { query } = await inquirer.prompt([{
-    name: 'query',
-    message: "Define a search query to search through the list of banks (case insensitive):"
-  }]);
+  let queriedBanks = [];
 
-  const queriedBanks = aspsps.filter((bank) => bank.name.toLowerCase().includes(query.toLowerCase()));
-  console.log(`Found ${queriedBanks.length} banks that match your descrition, let us pick one`);
+  do {
+    // Search and pick a bank. Your application might present a webpage to the user to pick their bank instead
+    const { query } = await inquirer.prompt([{
+      name: 'query',
+      message: "Define a search query to search through the list of banks (case insensitive):"
+    }]);
+  
+    queriedBanks = aspsps.filter((bank) => bank.name.toLowerCase().includes(query.toLowerCase()));
+
+    if (queriedBanks.length > 0) {
+      console.log(`Found ${queriedBanks.length} banks that match your descrition, let us pick one`);
+    } else {
+      console.log('Could not find a bank matching your query. Please try another query.');
+    }
+  } while(queriedBanks.length === 0);
 
   const { bank } = await inquirer.prompt([{
     type: 'list',
@@ -60,7 +69,7 @@ Please make sure to create a Nordigen Token at https://ob.nordigen.com/tokens/`)
   // Create our nordigen requisition
   const requisition = await nordigen.createRequisition(
     enduser_id,
-    `https://github.com/vantezzen/nordigen?user=${enduser_id}`,
+    `https://github.com/vantezzen/nordigen`,
     enduser_id,
   );
   const requisitionLink = await nordigen.getRequisitionLink(requisition, aspsp.id);
@@ -80,7 +89,7 @@ Please make sure to create a Nordigen Token at https://ob.nordigen.com/tokens/`)
   console.log('Great! Now we can query your accounts:');
 
   const requsitionInfo = await nordigen.getRequisitionInfo(requisition.id);
-  console.log('Accounts:', requisitionInfo.accounts);
+  console.log('Accounts:', requsitionInfo.accounts);
 
   const details = await nordigen.getAccountDetails(requsitionInfo.accounts[0]);
   console.log('First account details: ', details);

@@ -51,7 +51,8 @@ const requisition = await nordigen.createRequisition(
 
   // The user needs to be redirected to their bank's website. After they are done they will be redirected back to your website.
   // This is why you will need to define a redirect URL here
-  `https://example.com/nordigen-callback?user=${enduser_id}`,
+  // PLEASE NOTE: Nordigen will automatically add "?ref={enduser_id}" to this callback URL so you won't need to add that yourself!
+  `https://example.com/nordigen-callback`,
 
   // You can define another unique ID here. This is the "reference" to this requisition
   "demo_id",
